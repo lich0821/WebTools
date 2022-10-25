@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    function run() {
+        var string = document.getElementById("string").value;
+        var pattern = document.getElementById("pattern").value;
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/api/v1/findall",
+            data: JSON.stringify({ pattern: pattern, string: string }),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                document.getElementById("result").value = result;
+            },
+            error: function () {
+                console.error("error");
+            }
+        });
+    }
+</script>
+<style>
+    .form-control:hover {
+        border: 1px solid #66be8c;
+    }
+
+    textarea.form-control {
+        padding: 0 10px;
+        width: 90%;
+        margin: 0 auto;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        box-sizing: content-box;
+        display: block;
+        padding: 6px 12px;
+        font-size: 14px;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 6px 24px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        margin: 0.5em 0;
+    }
+
+    .btn-green {
+        color: #fff;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+
+    .btn-red {
+        color: #fff;
+        background-color: #d9534f;
+        border-color: #d43f3a;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Python 正则试验</title>
+</head>
+
+<body>
+    <div style="margin: auto auto; text-align: center;">
+        <textarea class="form-control" id="string" rows="5" cols="30" placeholder="请输入字符串"></textarea><br />
+        <textarea class="form-control" id="pattern" rows="5" cols="30" placeholder="请输入正则表达式"></textarea><br />
+        <button onclick="run()" class="btn btn-green">验证</button><br />
+        <textarea class="form-control" id="result" rows="5" cols="30" placeholder="匹配结果"></textarea>
+    </div>
+</body>
+
+</html>

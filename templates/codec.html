@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    function encode() {
+        let msg = document.getElementById("msg").value;
+        let opt = document.getElementById("opt").value;
+        let lang = (opt == 0 ? document.getElementById("lang").value : String(opt));
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/api/v1/encode",
+            data: JSON.stringify({ lang: lang, msg: msg }),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                document.getElementById("result").value = result;
+            },
+            error: function () {
+                console.error("error");
+            }
+        });
+    }
+    function decode() {
+        let msg = document.getElementById("msg").value;
+        let opt = document.getElementById("opt").value;
+        let lang = (opt == 0 ? document.getElementById("lang").value : String(opt));
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/api/v1/decode",
+            data: JSON.stringify({ lang: lang, msg: msg }),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                document.getElementById("result").value = result;
+            },
+            error: function () {
+                console.error("error");
+            }
+        });
+    }
+
+    function copy() {
+        var text = document.getElementById("result").value;
+
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                // console.log("Text copied to clipboard");
+            })
+            .catch(err => {
+                console.error("Error in copying text: ", err);
+            });
+    }
+    function func(obj) {
+        if (obj.value == "0")
+            document.getElementById("lang").style.visibility = "visible";
+        else
+            document.getElementById("lang").style.visibility = "hidden";
+    }
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>编解码工具</title>
+</head>
+
+<style>
+    .form-control:hover {
+        border: 1px solid #66be8c;
+    }
+
+    textarea.form-control {
+        padding: 0 10px;
+        width: 90%;
+        margin: 0 auto;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        box-sizing: content-box;
+        display: block;
+        padding: 6px 12px;
+        font-size: 14px;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    }
+
+    .btn {
+        display: inline-block;
+        padding-left: 24px;
+		padding-right: 24px;
+		height: 34px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        /* margin: 0.5em 0; */
+    }
+
+    .btn-green {
+        color: #fff;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+
+    .btn-red {
+        color: #fff;
+        background-color: #d9534f;
+        border-color: #d43f3a;
+    }
+
+    .center {
+        /* margin: auto;
+        width: 50%; */
+        padding: 10px;
+		text-align: center;
+    }
+	.mt10{
+		margin-top:10px !important;
+	}
+	.width100{
+		width: 100px;
+	}
+	.selectStyle, .inputStyle{
+		    -webkit-appearance: none;
+		    background-color: #fff;
+		    background-image: none;
+		    border-radius: 4px;
+		    border: 1px solid #dcdfe6;
+		    box-sizing: border-box;
+		    color: #606266;
+		    display: inline-block;
+		    font-size: inherit;
+		    height: 34px;
+		    line-height: 34px;
+		    outline: none;
+		    padding: 0 15px;
+		    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+			line-height: 1.42857143;
+			vertical-align: middle;
+		    /* width: 100%; */
+	}
+	.selectStyle:hover, .inputStyle:hover,.inputStyle:focus{
+		border: 1px solid #5cb85c;
+	}
+</style>
+
+<body>
+    <div style="display:block;">
+        <textarea class="form-control inputStyle" id="msg" rows="5" cols="30" placeholder="待编/解码字符串"></textarea>
+        <textarea class="form-control mt10 inputStyle" id="result" rows="5" cols="30" placeholder="编/解码结果"></textarea><br />
+        <div class="center">
+            <select id="opt" onchange="func(this)" class="selectStyle width100">
+                <option value="0">非人类语</option>
+                <option value="1">繁体</option>
+                <option value="2">火星文</option>
+            </select>
+            <input id="lang" class="inputStyle" type="text" value="汪" size="3" />
+            <button onclick="encode()" class="btn btn-green">编码</button>
+            <button onclick="decode()" class="btn btn-green">解码</button>
+            <button onclick="copy()" class="btn btn-green">复制结果</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
